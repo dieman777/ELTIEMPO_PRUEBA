@@ -1,0 +1,48 @@
+﻿@model List<APP_ELTIEMPO_PRUEBA.Models.OfertaEmpleoViewModel>
+
+@{
+    
+    ViewBag.Title = "Listado de Ofertas de Empleo";
+}
+
+
+<h2>Listado de Ofertas de Empleo</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Cargo</th>
+            <th>Descripción</th>
+            <th>Ubicación</th>
+            <th>Salario</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var oferta in Model)
+        {
+            <tr>
+                <td>@oferta.CARGO</td>
+                <td>@oferta.DESCRIPCION</td>
+                <td>@oferta.UBICACION</td>
+                <td>@oferta.SALARIO</td>
+                <td>
+                    <!--Exclusivo para el Reclutador-->
+                    @* Botón de editar *@
+                    <a href="@Url.Action("Registro", "OfertaEmpleo", new { id = oferta.ID })" class="btn btn-primary">Editar</a>
+                </td>
+                <td>
+                    <!--Exclusivo para el Reclutador-->
+                    @using (Html.BeginForm("Eliminar", "OfertaEmpleo", new { id = oferta.ID }, FormMethod.Post, new { onsubmit = "return confirm('¿Estás seguro de eliminar esta oferta?');", @class = "d-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    }
+                </td>
+                <td>
+                <!--Exclusivo para el candidato-->
+                    <button type="submit" class="btn btn-primary">Aplicar a oferta</button>                </td>
+            </tr>
+        }
+    </tbody>
+</table>
